@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --------------------------------- base ---------------------------------- */
+
+:root {
+  --ink: #0b0b0c;
+  --ivory: #f4efe6;
+  --signal: #ff3b14;
+}
+
+html {
+  scroll-padding-top: 5rem; /* keeps anchored sections clear of the fixed header */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--ink);
+  color: var(--ivory);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--ink);
+}
+
+section:focus,
+main:focus {
+  outline: none;
+}
+
+/* One consistent, visible focus treatment across the site. */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Skip link */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  transform: translateY(-150%);
+  background: var(--ivory);
+  color: var(--ink);
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ---------------------------- scroll reveals ----------------------------- */
+/* Scoped behind .js so that if scripting fails, nothing is ever hidden. */
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.js [data-reveal-line] {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.js [data-reveal-line].is-visible {
+  transform: scaleX(1);
+}
+
+/* ------------------------------- textures -------------------------------- */
+
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* Editorial rule used between stacked lines of display type. */
+.display-caps {
+  text-transform: uppercase;
+}
+
+/* --------------------------- reduced motion ------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .js [data-reveal-line] {
+    transform: scaleX(1) !important;
+  }
+}
